@@ -17,6 +17,23 @@ app.get('/teacher',function(req,res){
 	res.sendFile(path.join(__dirname+'/public/mat.html'));
 });
 
+app.get('/student',function(req,res){
+	res.sendFile(path.join(__dirname+'/public/student.html'));
+});
+
+app.get('/api/teacher',function(req,res){
+
+	var input = 'SELECT * FROM sessions;'
+
+	connection.query(input, function(err,result){
+		console.log(result);
+		if (err) throw err;
+		res.json(result);
+	});
+
+	
+});
+
 app.post('/api/teacher', function(req,res){
 
 	console.log(req.body)
@@ -27,8 +44,13 @@ app.post('/api/teacher', function(req,res){
 
 	connection.query(input, function(err,result){
 		if (err) throw err;
-		// console.log("Success!")
 	});
+
+	// var input = 'INSERT INTO sessions(time, teacher, available) VALUES ("'+req.body.time+'", "'+req.body.name+'", "yes");'
+
+	// connection.query(input, function(err,result){
+	// 	if (err) throw err;
+	// });
 
 	// connection.query('INSERT INTO programmers(name, role, programminglanguage, yearsexperience) VALUES ("Mauricio", "Frontend", "JavaScript", 10);', function(err, res) {
 	// 	if (err) throw err;
