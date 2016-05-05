@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Teacher Availability</title>
+
+	<!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+	<!-- Compiled and minified CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+
+	<!-- Compiled and minified JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+
+	<!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+	<!-- Moment.js -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+	
+</head>
+<body>
+
+<div class="container">
+
+	<div class="row">
+		<div class="col s12">
+			<h1>Teacher Availability</h1>
+		</div>
+		<div class="row">
+		    <div class="input-field col s6">
+				<input value="Alvin" id="teacherName" type="text" class="validate">
+				<label class="active" for="teacherName">First Name</label>
+		    </div>
+		</div>
+	</div>
+
+	<label for="theDate">Select a Date:</label>
+	<input id="theDate" type="date" class="datepicker">
+
+	<div class="row">
+		<div class="input-field col s6">
+			<select id='startTime'>
+				<option value="" disabled selected>Choose your option</option>
+				<option value="06:00:00">6:00am</option>
+				<option value="06:30:00">6:30am</option>
+				<option value="1">7:00am</option>
+				<option value="2">7:30am</option>
+				<option value="1">8:00am</option>
+				<option value="2">8:30am</option>
+				<option value="1">9:00am</option>
+				<option value="2">9:30am</option>
+				<option value="1">10:00am</option>
+				<option value="2">10:30am</option>
+				<option value="1">11:00am</option>
+				<option value="2">11:30am</option>
+				<option value="1">12:00pm</option>
+				<option value="2">12:30pm</option>
+				<option value="1">1:00pm</option>
+				<option value="2">1:30pm</option>
+				<option value="1">2:00pm</option>
+				<option value="2">2:30pm</option>
+				<option value="1">3:00pm</option>
+				<option value="2">3:30pm</option>
+				<option value="1">4:00pm</option>
+				<option value="2">4:30pm</option>
+				<option value="1">5:00pm</option>
+				<option value="2">5:30pm</option>
+				<option value="1">6:00pm</option>
+				<option value="2">6:30pm</option>
+				<option value="1">7:00pm</option>
+				<option value="2">7:30pm</option>
+				<option value="1">8:00pm</option>
+				<option value="2">8:30pm</option>
+				<option value="1">9:00pm</option>
+				<option value="2">9:30pm</option>
+			</select>
+			<label>Materialize Select</label>
+		</div>
+		<div class="input-field col s6">
+			<select id='endTime'>
+				<option value="" disabled selected>Choose your option</option>
+				<option value="1">6:00am</option>
+				<option value="2">6:30am</option>
+				<option value="1">7:00am</option>
+				<option value="2">7:30am</option>
+				<option value="1">8:00am</option>
+				<option value="2">8:30am</option>
+				<option value="1">9:00am</option>
+				<option value="2">9:30am</option>
+				<option value="1">10:00am</option>
+				<option value="2">10:30am</option>
+				<option value="1">11:00am</option>
+				<option value="2">11:30am</option>
+				<option value="1">12:00pm</option>
+				<option value="2">12:30pm</option>
+				<option value="1">1:00pm</option>
+				<option value="2">1:30pm</option>
+				<option value="1">2:00pm</option>
+				<option value="2">2:30pm</option>
+				<option value="1">3:00pm</option>
+				<option value="2">3:30pm</option>
+				<option value="1">4:00pm</option>
+				<option value="2">4:30pm</option>
+				<option value="1">5:00pm</option>
+				<option value="2">5:30pm</option>
+				<option value="1">6:00pm</option>
+				<option value="2">6:30pm</option>
+				<option value="1">7:00pm</option>
+				<option value="2">7:30pm</option>
+				<option value="1">8:00pm</option>
+				<option value="2">8:30pm</option>
+				<option value="1">9:00pm</option>
+				<option value="2">9:30pm</option>
+			</select>
+			<label>Materialize Select</label>
+		</div>
+		<a class="waves-effect waves-light btn" id="button">button</a>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+
+	    $('select').material_select();
+
+	    $('.datepicker').pickadate({
+			selectMonths: true, // Creates a dropdown to control month
+			selectYears: 15 // Creates a dropdown of 15 years to control year
+		});
+
+	    $('#button').click(function(){
+	    	// alert( $('#startTime option:selected').val() )
+	    	// alert( $('#theDate').val() )
+	    	alert( moment( $('#theDate').val() + " " + $('#startTime option:selected').val() ).format('YYYY-MM-DD HH:MM:SS') );
+	    	var timeToPush = moment( $('#theDate').val() + " " + $('#startTime option:selected').val() ).format('YYYY-MM-DD HH:MM:SS');
+
+	    	var originURL = document.location.origin;
+
+		    var newSession = {
+				name: $('#teacherName').val(),
+				time: timeToPush
+			};
+
+		    $.post(originURL + '/api/teacher', newSession).done(function(data){
+
+		    	console.log(newSession);
+				console.log(data);
+
+			});
+
+	    });
+
+	    // alert( moment() );
+	    // alert( moment().format("YYYY-MM-DD") );
+	    // alert( moment("20111031", "YYYYMMDD").format("YYYY-MM-DD") );
+
+	});
+
+
+
+</script>
+
+</body>
+</html>
