@@ -44,7 +44,7 @@ app.post('/api/teacher', function(req,res){
 	// console.log(req.body.time)
 	// console.log(req.body.endTime)
 
-	var input = 'INSERT INTO sessions(time, teacher, available) VALUES ("'+req.body.time+'", "'+req.body.name+'", "yes");'
+	// var input = 'INSERT INTO sessions(time, teacher, available) VALUES ("'+req.body.time+'", "'+req.body.name+'", "yes");'
 
 	// connection.query(input, function(err,result){
 	// 	if (err) throw err;
@@ -56,8 +56,15 @@ app.post('/api/teacher', function(req,res){
 
 
 	for (var m = moment(req.body.time); m.isBefore(moment(req.body.endTime)); m.add(30, 'minutes')) {
+
+		var input = 'INSERT INTO sessions(time, teacher, available) VALUES ("' + m.format('YYYY-MM-DD HH:mm:SS') + '", "'+req.body.name+'", "yes");'
+
+		connection.query(input, function(err,result){
+			if (err) throw err;
+		});
+
 		console.log(m.format('YYYY-MM-DD HH:mm:SS'))
-	}
+	};
 
 	// for (var i = 0; i < 5; i ++) {
 
