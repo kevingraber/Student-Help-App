@@ -127,6 +127,8 @@
 
 	$(document).ready(function() {
 
+		console.log(moment('2010-10-20 12:10:30').isAfter('2010-01-01 12:10:30'));
+
 	    $('select').material_select();
 
 	    $('.datepicker').pickadate({
@@ -137,14 +139,33 @@
 	    $('#button').click(function(){
 	    	// alert( $('#startTime option:selected').val() )
 	    	// alert( $('#theDate').val() )
-	    	alert( moment( $('#theDate').val() + " " + $('#startTime option:selected').val() ).format('YYYY-MM-DD HH:mm:SS') );
+	    	// alert( moment( $('#theDate').val() + " " + $('#startTime option:selected').val() ).format('YYYY-MM-DD HH:mm:SS') );
 	    	var timeToPush = moment( $('#theDate').val() + " " + $('#startTime option:selected').val() ).format('YYYY-MM-DD HH:mm:SS');
+
+	    	var formattedEndTime = moment( $('#theDate').val() + " " + $('#endTime option:selected').val() ).format('YYYY-MM-DD HH:mm:SS');
+	    	// alert(formattedEndTime)
+
+	    	// Won't let you submit unless the end time is greater than the start time. 
+	    	if ( moment(formattedEndTime).diff(moment(timeToPush), 'minutes') <= 0 ) {
+	    		alert('Please make sure your end time is greater than your starting time!');
+	    		return;
+	    	}
+
+	    	// var numberOfSessions = moment(formattedEndTime).diff(moment(timeToPush), 'minutes') / 30;
+
+	    	alert(moment(formattedEndTime).diff(moment(timeToPush), 'minutes'))
+	    	// alert(numberOfSessions)
+
+	  //   	for (var m = moment(timeToPush); m.isBefore(moment(formattedEndTime)); m.add(30, 'minutes')) {
+			// 	console.log(m.format('YYYY-MM-DD HH:mm:SS'))
+			// }
 
 	    	var originURL = document.location.origin;
 
 		    var newSession = {
 				name: $('#teacherName').val(),
-				time: timeToPush
+				time: timeToPush,
+				endTime: formattedEndTime
 			};
 
 		    $.post(originURL + '/api/teacher', newSession).done(function(data){
