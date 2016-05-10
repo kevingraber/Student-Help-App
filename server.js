@@ -4,9 +4,14 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var connection = require('./config/connection.js');
 var moment = require('moment')
+var morgan = require('morgan');
+var jwt = require('jsonwebtoken');
 
 var app = express();
 var PORT = process.env.PORT || 80;
+
+// use morgan to log requests to the console
+app.use(morgan('dev'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -14,12 +19,34 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({type:'application/vnd.api+json'}));
 app.use(express.static('public'));
 
+app.post('/auth',function(req,res){
+
+	console.log(req.body)
+	var input = 'SELECT * FROM teachers WHERE name="'+req.body.username+'";'
+	connection.query(input, function(err,result){
+		if (req.body.password == result[0].password) {
+			res.json({success: true})
+		} else {
+			res.json({success: false})
+		}
+		console.log(result);
+		if (err) throw err;
+	});
+
+});
+
+
+
 app.get('/teacher',function(req,res){
 	res.sendFile(path.join(__dirname+'/public/mat.html'));
 });
 
 app.get('/student',function(req,res){
 	res.sendFile(path.join(__dirname+'/public/student.html'));
+});
+
+app.get('/student',function(req,res){
+	res.sendFile(path.join(__dirname+'/public/index.html'));
 });
 
 app.get('/api/teacher',function(req,res){
@@ -54,7 +81,9 @@ app.post('/api/teacher', function(req,res){
 	// console.log(newTimeIncrement);
 
 
-
+	// This loop parses the number of 30 minute sessions there are in the period of the teacher's availability.
+	// A seperate database entry is made for each 30 minute session.
+	// If the start time is earlier than the end time it pushes a session to the database, adds 30 minutes to the start time, and runs again.
 	for (var m = moment(req.body.time); m.isBefore(moment(req.body.endTime)); m.add(30, 'minutes')) {
 
 		var input = 'INSERT INTO sessions(time, teacher, available) VALUES ("' + m.format('YYYY-MM-DD HH:mm:SS') + '", "'+req.body.name+'", "yes");'
