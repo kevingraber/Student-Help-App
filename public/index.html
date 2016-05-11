@@ -33,7 +33,8 @@
 				<label for="password">Password</label>
 			</div>
 		</div>
-		<a class="waves-effect waves-light btn" id='button'>button</a>
+		<a class="waves-effect waves-light btn" id='button'>Submit</a>
+		<a class="waves-effect waves-light btn" href="/teacher">Teacher</a>
 	</form>
 </div>
 
@@ -52,8 +53,26 @@
    			$.post(originURL + '/auth', info).done(function(data){
 		    	console.log(info);
 				console.log(data);
+
+				// window.localStorage.setItem('token', data.token);
+				sessionStorage.setItem('token', data.token);
+
+				var token = window.localStorage.getItem('token');
+				window.location.href = originURL + '/teacher?token=' + data.token;
+
+
+
+				// $.ajax({
+				// 	url: originURL + '/teacher', 
+				// 	method: 'GET', 
+				// 	headers: {
+				// 		"x-access-token": data.token
+				// 	}
+				// }).done(function(dat){
+				// 	console.log(dat)
+				// });
 			});
-   		})
+   		});
 
   	});
 </script>
