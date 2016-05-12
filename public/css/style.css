@@ -1,0 +1,15 @@
+body {
+	background-image: url(../images/tutor.jpg);
+	background-size: cover;
+}
+
+.test {
+	font-size: medium;
+	font-weight: lighter;
+}
+
+.lefty {
+	border-right-style: groove;
+	border-right-color: white;
+	border-right-width: 1px;
+}

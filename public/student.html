@@ -29,6 +29,7 @@
 	<div class="row">
 		<div class="col s12 center-align">
 			<h1>Student Page</h1>
+			<h4>Teacher Availability</h4>
 		</div>
 	</div>
 
@@ -68,8 +69,29 @@
 		 		// timeTD.text(response[i].time)
 		 		timeTD.text(formattedTime)
 
+
 		 		var buttonTD = $('<td>')
-		 		buttonTD.append('<a class="waves-effect waves-light btn">button</a>')
+
+		 		var buttonlink = $('<a>')
+		 		buttonlink.addClass('waves-effect waves-light btn')
+		 		buttonlink.text('click!')
+		 		buttonlink.attr('data-id', response[i].id)
+
+
+		 		// buttonTD.append('<a class="waves-effect waves-light btn">button</a>')
+
+		 		buttonlink.click(function(){
+		 			var updateInfo = {
+						id: $(this).attr("data-id")
+					};
+					$.post(originURL + '/update', updateInfo).done(function(data){
+
+					});
+					Materialize.toast('Session Reserved!', 4000)
+					$(this).closest('tr').remove();
+		 		})
+
+		 		buttonTD.append(buttonlink)
 
 		 		tr.append(nameTD)
 		 		tr.append(timeTD)

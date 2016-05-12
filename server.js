@@ -7,6 +7,8 @@ var moment = require('moment')
 var morgan = require('morgan');
 var jwt = require('jsonwebtoken');
 
+var Session = require("./model/session.js");
+
 var app = express();
 var PORT = process.env.PORT || 80;
 
@@ -49,6 +51,8 @@ app.post('/auth',function(req,res, next){
 
 		        console.log("/teacher?token=" + token);
 
+		        next();
+
 			} else {
 				res.json({success: false, message: 'Authentication failed. Password Incorrect.'})
 			}	
@@ -61,42 +65,42 @@ app.post('/auth',function(req,res, next){
 
 });
 
-app.all('*', function(req, res, next) {
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+// app.all('*', function(req, res, next) {
+//     var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-    // If a token is given...
-    if (token){
+//     // If a token is given...
+//     if (token){
 
-    	// Attempt to verify it against hte app's jwtSecret (In our case: "CODINGROCKS")
-        jwt.verify(token, app.get('jwtSecret'), function(err, decoded){
+//     	// Attempt to verify it against hte app's jwtSecret (In our case: "CODINGROCKS")
+//         jwt.verify(token, app.get('jwtSecret'), function(err, decoded){
 
-        	// If an error is experienced log it.
-            if(err){
-                console.log("Uh... You call that a token? Hah!");
-                return res.json({success: false, message: 'Uh... You call that a token? Hah!'});
+//         	// If an error is experienced log it.
+//             if(err){
+//                 console.log("Uh... You call that a token? Hah!");
+//                 return res.json({success: false, message: 'Uh... You call that a token? Hah!'});
             
-            // If the token is valid let the user know!
-            } else {
-                // if token is valid, save to request for use in other routes
-                console.log("Token looks legit to me. Have fun with our API!");
+//             // If the token is valid let the user know!
+//             } else {
+//                 // if token is valid, save to request for use in other routes
+//                 console.log("Token looks legit to me. Have fun with our API!");
 
-                // Save that in the requests' "decoded" property so its kept for future use
-                req.decoded = decoded;
+//                 // Save that in the requests' "decoded" property so its kept for future use
+//                 req.decoded = decoded;
 
-                // Proceed to check out the API routes. 
-                next();
-            }
-        });
+//                 // Proceed to check out the API routes. 
+//                 next();
+//             }
+//         });
 
-    // If no token is provided also let the user know!
-    } else {
-        // no token provided
-        return res.status(403).send({
-            success: false,
-            message: "Bro. Did you even send me a token?"
-        });
-    }
-});
+//     // If no token is provided also let the user know!
+//     } else {
+//         // no token provided
+//         return res.status(403).send({
+//             success: false,
+//             message: "Bro. Did you even send me a token?"
+//         });
+//     }
+// });
 
 app.get('/teacher',function(req,res){
 	console.log("BLAH");
@@ -113,16 +117,37 @@ app.get('/student',function(req,res){
 
 app.get('/api/teacher',function(req,res){
 
-	var input = 'SELECT * FROM sessions;'
+	// var input = 'SELECT * FROM sessions;'
+	// connection.query(input, function(err,result){
+	// 	console.log(result);
+	// 	if (err) throw err;
+	// 	res.json(result);
+	// });
 
-	connection.query(input, function(err,result){
-		console.log(result);
-		if (err) throw err;
-		res.json(result);
-	});
+	Session.findAll({
+		where: {
+			available: true,
+		},
+		order: ['time']
+	})
+		.then(function(result){
+			res.json(result);
+		})
 
 	// console.log(moment('2010-10-20 12:10:30').isAfter('2010-01-01 12:10:30'));
 
+	
+});
+
+app.post('/update',function(req,res){
+
+	Session.update({
+		available: false,
+	}, {
+		where: {
+			id: req.body.id
+		}
+	});
 	
 });
 
@@ -148,11 +173,17 @@ app.post('/api/teacher', function(req,res){
 	// If the start time is earlier than the end time it pushes a session to the database, adds 30 minutes to the start time, and runs again.
 	for (var m = moment(req.body.time); m.isBefore(moment(req.body.endTime)); m.add(30, 'minutes')) {
 
-		var input = 'INSERT INTO sessions(time, teacher, available) VALUES ("' + m.format('YYYY-MM-DD HH:mm:SS') + '", "'+req.body.name+'", "yes");'
-
-		connection.query(input, function(err,result){
-			if (err) throw err;
+		Session.create({
+			time: m.format('YYYY-MM-DD HH:mm:SS'),
+			teacher: req.body.name,
+			available: true
 		});
+
+		// var input = 'INSERT INTO sessions(time, teacher, available) VALUES ("' + m.format('YYYY-MM-DD HH:mm:SS') + '", "'+req.body.name+'", "yes");'
+
+		// connection.query(input, function(err,result){
+		// 	if (err) throw err;
+		// });
 
 		console.log(m.format('YYYY-MM-DD HH:mm:SS'))
 	};
