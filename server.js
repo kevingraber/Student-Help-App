@@ -5,9 +5,46 @@ var path = require('path');
 var connection = require('./config/connection.js');
 var moment = require('moment')
 var morgan = require('morgan');
-var jwt = require('jsonwebtoken');
-
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var User = require('./model/user.js')
+// var jwt = require('jsonwebtoken');
 var Session = require("./model/session.js");
+
+passport.use(new LocalStrategy(
+  	function(username, password, done) {
+    	User.findOne({ 
+    		where: {
+    			username: username
+    		}
+    	}).then(function(user) {
+	      	if (!user) { 
+	      		return done(null, false, { message: 'Incorrect credentials.' })
+	      	}
+	      	if (user.password != password) { 
+	      		return done(null, false, { message: 'Incorrect credentials.' }) 
+	      	}
+	      	return done(null, user);
+    	});
+  	}
+));
+
+passport.serializeUser(function(user, done) {
+  	done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  	User.findOne({
+  		where: {
+  			id: id
+  		}
+  	}).then(function (user) {
+	    if (user == null) {
+	    	done(new Error('Wrong user id.'))
+	    }
+		done(null, user);
+ 	});
+});
 
 var app = express();
 var PORT = process.env.PORT || 80;
@@ -16,7 +53,7 @@ var PORT = process.env.PORT || 80;
 app.use(morgan('dev'));
 
 // Sets JSON Web Token Secret for Encryption
-app.set('jwtSecret', "CODINGROCKS"); // Can put anything in here
+// app.set('jwtSecret', "CODINGROCKS"); // Can put anything in here
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -24,46 +61,52 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({type:'application/vnd.api+json'}));
 app.use(express.static('public'));
 
+app.use(require('cookie-parser')());
+app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 
-app.post('/auth',function(req,res, next){
+app.use(passport.initialize());
+app.use(passport.session());
 
-	console.log(req.body)
-	var input = 'SELECT * FROM teachers WHERE name="'+ req.body.username+'";'
-	connection.query(input, function(err,result){
 
-		// console.log(result)
+// app.post('/auth',function(req,res, next){
 
-		if (result == []) {
-			res.json({success: false, message: 'Authentication failed. User not found.'})
-		} else {
+// 	console.log(req.body)
+// 	var input = 'SELECT * FROM teachers WHERE name="'+ req.body.username+'";'
+// 	connection.query(input, function(err,result){
 
-			if (req.body.password == result[0].password) {
+// 		// console.log(result)
 
-				var token = jwt.sign(result[0], app.get('jwtSecret'), {
-		          expiresIn: '1440m' // expires in 24 hours
-		        });
+// 		// if (result == []) {
+// 		// 	res.json({success: false, message: 'Authentication failed. User not found.'})
+// 		// } else {
 
-		        res.json({
-		          success: true,
-		          message: 'Enjoy your token!',
-		          token: token
-		        });
+// 		// 	if (req.body.password == result[0].password) {
 
-		        console.log("/teacher?token=" + token);
+// 		// 		var token = jwt.sign(result[0], app.get('jwtSecret'), {
+// 		//           expiresIn: '1440m' // expires in 24 hours
+// 		//         });
 
-		        next();
+// 		//         res.json({
+// 		//           success: true,
+// 		//           message: 'Enjoy your token!',
+// 		//           token: token
+// 		//         });
 
-			} else {
-				res.json({success: false, message: 'Authentication failed. Password Incorrect.'})
-			}	
+// 		//         console.log("/teacher?token=" + token);
 
-		}
+// 		//         next();
 
-		if (err) throw err;
+// 		// 	} else {
+// 		// 		res.json({success: false, message: 'Authentication failed. Password Incorrect.'})
+// 		// 	}	
 
-	});
+// 		// }
 
-});
+// 		// if (err) throw err;
+
+// 	});
+
+// });
 
 // app.all('*', function(req, res, next) {
 //     var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -102,14 +145,56 @@ app.post('/auth',function(req,res, next){
 //     }
 // });
 
-app.get('/teacher',function(req,res){
-	console.log("BLAH");
-	res.sendFile(path.join(__dirname+'/public/mat.html'));
-});
 
-app.get('/student',function(req,res){
-	res.sendFile(path.join(__dirname+'/public/student.html'));
-});
+app.get('/login', 
+	function(req, res){
+		res.sendFile(path.join(__dirname+'/public/new-index.html'));
+	});
+
+app.post('/login', 
+	passport.authenticate('local', { failureRedirect: '/login' }),
+ 	function(req, res) {
+ 		if (req.user.admin == true) {
+ 			res.redirect('/teacher');
+ 		} else {
+ 			res.redirect('/student');
+ 		}
+  	});
+
+app.get('/logout',
+  	function(req, res){
+		req.logout();
+    	res.redirect('/login');
+ 	});
+
+app.get('/teacher',
+	require('connect-ensure-login').ensureLoggedIn(),
+	function(req,res){
+		console.log(req.user.username)
+		res.sendFile(path.join(__dirname+'/public/mat.html'));
+	});
+
+app.get('/student',
+	require('connect-ensure-login').ensureLoggedIn(),
+	function(req,res){
+		res.sendFile(path.join(__dirname+'/public/new-student.html'));
+	});
+
+app.get('/profile',
+	require('connect-ensure-login').ensureLoggedIn(),
+	function(req,res){
+
+	Session.findAll({
+		where: {
+			student: req.user.name
+		},
+		order: ['time']
+	})
+		.then(function(result){
+			res.json(result);
+		})
+
+	});
 
 // app.get('/student',function(req,res){
 // 	res.sendFile(path.join(__dirname+'/public/index.html'));
@@ -148,6 +233,14 @@ app.post('/update',function(req,res){
 			id: req.body.id
 		}
 	});
+
+	Session.update({
+		student: req.user.name,
+	}, {
+		where: {
+			id: req.body.id
+		}
+	});
 	
 });
 
@@ -175,7 +268,7 @@ app.post('/api/teacher', function(req,res){
 
 		Session.create({
 			time: m.format('YYYY-MM-DD HH:mm:SS'),
-			teacher: req.body.name,
+			teacher: req.user.name,
 			available: true
 		});
 

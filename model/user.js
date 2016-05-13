@@ -10,22 +10,25 @@ var Sequelize = require("sequelize");
 var sequelize = require("../config/connection.js"); 
 
 // Creates a "Character" model that matches up with DB
-var Session = sequelize.define("session", {
+var User = sequelize.define("user", {
 	id: {
 		type: Sequelize.INTEGER,
 		autoIncrement: true,
 		primaryKey: true
 	},
-	time: {
-		type: Sequelize.DATE,
+	name: {
+		type: Sequelize.STRING,
 	},
-	teacher: {
-		type: Sequelize.STRING(50),
+	username: {
+		type: Sequelize.STRING,
 	},
-	student: {
-		type: Sequelize.STRING(50),
+	password: {
+		type: Sequelize.STRING,
 	},
-	available: {
+	email: {
+		type: Sequelize.STRING,
+	},
+	admin: {
 		type: Sequelize.BOOLEAN,
 	}
 }, {
@@ -33,7 +36,7 @@ var Session = sequelize.define("session", {
 });
 
 // Syncs with DB
-Session.sync();
+User.sync();
 
 // Makes the Character Model available for other files (will also create a table)
-module.exports = Session;
+module.exports = User;

@@ -19,11 +19,14 @@
   "homepage": "https://github.com/kevingraber/Student-Help-App#readme",
   "dependencies": {
     "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
     "express": "^4.13.4",
+    "express-session": "^1.13.0",
     "jsonwebtoken": "^6.2.0",
     "moment": "^2.13.0",
     "morgan": "^1.7.0",
     "mysql": "^2.10.2",
+    "passport": "^0.3.2",
     "sequelize": "^3.23.1",
     "sessionstorage": "0.0.1"
   }

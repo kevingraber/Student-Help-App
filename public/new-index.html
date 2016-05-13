@@ -40,8 +40,11 @@
 			<div class="col s6 ">
 				<h5 class="center-align">Login info</h5>
 				<!-- <div class="col 8 offset-s2"> -->
-				<input>
-				<input>
+				<form method='POST'>
+					<input name='username'>
+					<input name='password' type='password'>
+					<button class="waves-effect waves-light btn" type='submit'><i class="material-icons right">lock</i>Log In</button>
+				</form>
 				<!-- </div> -->
 			</div>
 
@@ -92,54 +95,6 @@
       </div>
  -->
 </div>
-
-<script type="text/javascript">
-	$(document).ready(function() {
-   		$('select').material_select();
-
-   		$('#button').click(function(){
-	   		var info = {
-	   			username: $('#usernameInput').val(),
-	   			password: $('#passwordInput').val()
-	   		}
-   			var originURL = document.location.origin;
-   			$.post(originURL + '/auth', info).done(function(data){
-		    	console.log(info);
-				console.log(data);
-
-				// window.localStorage.setItem('token', data.token);
-				// sessionStorage.setItem('token', data.token);
-
-				// console.log(sessionStorage.getItem('token'))
-
-				var token = window.localStorage.getItem('token');
-				// window.location.href = originURL + '/teacher?token=' + data.token;
-
-				if (token) {
-				  $.ajaxSetup({
-				    headers: {
-				      'x-access-token': token
-				    }
-				  });
-				}
-
-
-
-				// $.ajax({
-				// 	url: originURL + '/teacher', 
-				// 	method: 'GET', 
-				// 	headers: {
-				// 		"x-access-token": data.token
-				// 	}
-
-				// }).done(function(dat){
-				// 	console.log(dat)
-				// });
-			});
-   		});
-
-  	});
-</script>
 
 </body>
 </html>
