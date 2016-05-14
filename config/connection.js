@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-var password = require('./password.js')
+// var password = require('./password.js')
 // Dependencies
 var Sequelize = require("sequelize");
 
@@ -21,11 +21,12 @@ var Sequelize = require("sequelize");
 
 // module.exports = connection;
 
+// Password saved in heroku!
 var source = {
     port: 3306,
     host: 'localhost',
     user: 'root',
-    password: password,
+    password: ENV['dbpassword'],
     database: 'help_db'
 }
 
