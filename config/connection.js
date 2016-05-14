@@ -24,10 +24,10 @@ var Sequelize = require("sequelize");
 // Password saved in heroku!
 var source = {
     port: 3306,
-    host: 'localhost',
-    user: 'root',
-    password: ENV['dbpassword'],
-    database: 'help_db'
+    host: 'izm96dhhnwr2ieg0.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+    user: 'ab8ido2rmo3b55ri',
+    password: 'wi3dn7su0kibmbmp',
+    database: 'put8yze6egm5wybz'
 }
 
 var sequelize = new Sequelize(source.database, source.user, source.password, {
