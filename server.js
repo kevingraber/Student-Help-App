@@ -184,15 +184,28 @@ app.get('/profile',
 	require('connect-ensure-login').ensureLoggedIn(),
 	function(req,res){
 
-	Session.findAll({
-		where: {
-			student: req.user.name
-		},
-		order: ['time']
-	})
-		.then(function(result){
-			res.json(result);
+		if (req.user.admin == false) {
+		Session.findAll({
+			where: {
+				student: req.user.name
+			},
+			order: ['time']
 		})
+			.then(function(result){
+				res.json(result);
+			})
+		} else if (req.user.admin == true) {
+				Session.findAll({
+			where: {
+				teacher: req.user.name,
+				available: false
+			},
+			order: ['time']
+		})
+			.then(function(result){
+				res.json(result);
+			})
+		}
 
 	});
 

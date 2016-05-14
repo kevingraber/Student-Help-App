@@ -24,104 +24,153 @@
 </head>
 <body>
 
+<nav>
+	<div class="nav-wrapper">
+		<a href="#!" class="brand-logo">Student Help App</a>
+		<ul class="right hide-on-med-and-down">
+			<li><a href="/logout"><i class="material-icons right">settings_power</i>Log Out</a></li>
+		</ul>
+	</div>
+</nav>
+
 <div class="container">
 
 	<div class="row">
-		<div class="col s12">
-			<h1>Teacher Availability</h1>
+		<div class="col s12 center-align">
+			<h1 class='center-align'>Welcome Teachers!</h1>
+			<p>Select a time period when you are available to help students.</p>
+			<p>A session will be made for every 30 minute increment in your selected time period.</p>
+			<p>You can also view a list of sessions that students have booked with you.</p>
 		</div>
-		<!-- <div class="row">
-		    <div class="input-field col s6">
-				<input placeholder="Your Name" id="teacherName" type="text" class="validate">
-				<label class="active" for="teacherName">First Name</label>
-		    </div>
-		</div> -->
 	</div>
 
-	<label for="theDate">Select a Date:</label>
-	<input id="theDate" type="date" class="datepicker">
-
 	<div class="row">
-		<div class="input-field col s6">
-			<select id='startTime'>
-				<option value="" disabled selected>Choose your option</option>
-				<option value="06:00:00">6:00am</option>
-				<option value="06:30:00">6:30am</option>
-				<option value="07:00:00">7:00am</option>
-				<option value="07:30:00">7:30am</option>
-				<option value="08:00:00">8:00am</option>
-				<option value="08:30:00">8:30am</option>
-				<option value="09:00:00">9:00am</option>
-				<option value="09:30:00">9:30am</option>
-				<option value="10:00:00">10:00am</option>
-				<option value="10:30:00">10:30am</option>
-				<option value="11:00:00">11:00am</option>
-				<option value="11:30:00">11:30am</option>
-				<option value="12:00:00">12:00pm</option>
-				<option value="12:30:00">12:30pm</option>
-				<option value="13:00:00">1:00pm</option>
-				<option value="13:30:00">1:30pm</option>
-				<option value="14:00:00">2:00pm</option>
-				<option value="14:30:00">2:30pm</option>
-				<option value="15:00:00">3:00pm</option>
-				<option value="15:30:00">3:30pm</option>
-				<option value="16:00:00">4:00pm</option>
-				<option value="16:30:00">4:30pm</option>
-				<option value="17:00:00">5:00pm</option>
-				<option value="17:30:00">5:30pm</option>
-				<option value="18:00:00">6:00pm</option>
-				<option value="18:30:00">6:30pm</option>
-				<option value="19:00:00">7:00pm</option>
-				<option value="19:30:00">7:30pm</option>
-				<option value="20:00:00">8:00pm</option>
-				<option value="20:30:00">8:30pm</option>
-				<option value="21:00:00">9:00pm</option>
-				<option value="21:30:00">9:30pm</option>
-			</select>
-			<label>Materialize Select</label>
+		<div class="col s8 offset-s2">
+			<ul class="tabs">
+				<li class="tab col s3"><a class="active" href="#test1">Create a new session</a></li>
+				<li class="tab col s3"><a href="#test2">My Sessions</a></li>
+			</ul>
 		</div>
-		<div class="input-field col s6">
-			<select id='endTime'>
-				<option value="" disabled selected>Choose your option</option>
-				<option value="06:00:00">6:00am</option>
-				<option value="06:30:00">6:30am</option>
-				<option value="07:00:00">7:00am</option>
-				<option value="07:30:00">7:30am</option>
-				<option value="08:00:00">8:00am</option>
-				<option value="08:30:00">8:30am</option>
-				<option value="09:00:00">9:00am</option>
-				<option value="09:30:00">9:30am</option>
-				<option value="10:00:00">10:00am</option>
-				<option value="10:30:00">10:30am</option>
-				<option value="11:00:00">11:00am</option>
-				<option value="11:30:00">11:30am</option>
-				<option value="12:00:00">12:00pm</option>
-				<option value="12:30:00">12:30pm</option>
-				<option value="13:00:00">1:00pm</option>
-				<option value="13:30:00">1:30pm</option>
-				<option value="14:00:00">2:00pm</option>
-				<option value="14:30:00">2:30pm</option>
-				<option value="15:00:00">3:00pm</option>
-				<option value="15:30:00">3:30pm</option>
-				<option value="16:00:00">4:00pm</option>
-				<option value="16:30:00">4:30pm</option>
-				<option value="17:00:00">5:00pm</option>
-				<option value="17:30:00">5:30pm</option>
-				<option value="18:00:00">6:00pm</option>
-				<option value="18:30:00">6:30pm</option>
-				<option value="19:00:00">7:00pm</option>
-				<option value="19:30:00">7:30pm</option>
-				<option value="20:00:00">8:00pm</option>
-				<option value="20:30:00">8:30pm</option>
-				<option value="21:00:00">9:00pm</option>
-				<option value="21:30:00">9:30pm</option>
-			</select>
-			<label>Materialize Select</label>
+	</div>
+
+	<div id="test1" class="col s12">
+
+		<div class='row'>
+			<div class='col s8 offset-s2'>
+				<label for="theDate">Select a Date:</label>
+				<input id="theDate" type="date" class="datepicker">
+			</div>
 		</div>
-		<a class="waves-effect waves-light btn" id="button">button</a>
+
+		<div class="row">
+			<div class='col s8 offset-s2'>
+				<div class="input-field col s6">
+					<select id='startTime'>
+						<option value="" disabled selected>Choose a start time</option>
+						<option value="06:00:00">6:00am</option>
+						<option value="06:30:00">6:30am</option>
+						<option value="07:00:00">7:00am</option>
+						<option value="07:30:00">7:30am</option>
+						<option value="08:00:00">8:00am</option>
+						<option value="08:30:00">8:30am</option>
+						<option value="09:00:00">9:00am</option>
+						<option value="09:30:00">9:30am</option>
+						<option value="10:00:00">10:00am</option>
+						<option value="10:30:00">10:30am</option>
+						<option value="11:00:00">11:00am</option>
+						<option value="11:30:00">11:30am</option>
+						<option value="12:00:00">12:00pm</option>
+						<option value="12:30:00">12:30pm</option>
+						<option value="13:00:00">1:00pm</option>
+						<option value="13:30:00">1:30pm</option>
+						<option value="14:00:00">2:00pm</option>
+						<option value="14:30:00">2:30pm</option>
+						<option value="15:00:00">3:00pm</option>
+						<option value="15:30:00">3:30pm</option>
+						<option value="16:00:00">4:00pm</option>
+						<option value="16:30:00">4:30pm</option>
+						<option value="17:00:00">5:00pm</option>
+						<option value="17:30:00">5:30pm</option>
+						<option value="18:00:00">6:00pm</option>
+						<option value="18:30:00">6:30pm</option>
+						<option value="19:00:00">7:00pm</option>
+						<option value="19:30:00">7:30pm</option>
+						<option value="20:00:00">8:00pm</option>
+						<option value="20:30:00">8:30pm</option>
+						<option value="21:00:00">9:00pm</option>
+						<option value="21:30:00">9:30pm</option>
+					</select>
+					<label>Start Time:</label>
+				</div>
+				<div class="input-field col s6">
+					<select id='endTime'>
+						<option value="" disabled selected>Choose an end time</option>
+						<option value="06:00:00">6:00am</option>
+						<option value="06:30:00">6:30am</option>
+						<option value="07:00:00">7:00am</option>
+						<option value="07:30:00">7:30am</option>
+						<option value="08:00:00">8:00am</option>
+						<option value="08:30:00">8:30am</option>
+						<option value="09:00:00">9:00am</option>
+						<option value="09:30:00">9:30am</option>
+						<option value="10:00:00">10:00am</option>
+						<option value="10:30:00">10:30am</option>
+						<option value="11:00:00">11:00am</option>
+						<option value="11:30:00">11:30am</option>
+						<option value="12:00:00">12:00pm</option>
+						<option value="12:30:00">12:30pm</option>
+						<option value="13:00:00">1:00pm</option>
+						<option value="13:30:00">1:30pm</option>
+						<option value="14:00:00">2:00pm</option>
+						<option value="14:30:00">2:30pm</option>
+						<option value="15:00:00">3:00pm</option>
+						<option value="15:30:00">3:30pm</option>
+						<option value="16:00:00">4:00pm</option>
+						<option value="16:30:00">4:30pm</option>
+						<option value="17:00:00">5:00pm</option>
+						<option value="17:30:00">5:30pm</option>
+						<option value="18:00:00">6:00pm</option>
+						<option value="18:30:00">6:30pm</option>
+						<option value="19:00:00">7:00pm</option>
+						<option value="19:30:00">7:30pm</option>
+						<option value="20:00:00">8:00pm</option>
+						<option value="20:30:00">8:30pm</option>
+						<option value="21:00:00">9:00pm</option>
+						<option value="21:30:00">9:30pm</option>
+					</select>
+					<label>End Time:</label>
+				</div>
+				<a class="waves-effect waves-light btn" id="button">Submit</a>
+			</div>	
+		</div>
+	</div>
+	
+
+	<div id="test2" class="col s12">
+		<div class="row">
+			<table class="highlight centered">
+				<thead>
+					<tr>
+						<th data-field="id">Student</th>
+						<th data-field="name">Time</th>
+					</tr>
+				</thead>
+				<tbody id="tableBody2">
+				</tbody>
+			</table>
+		</div>
 	</div>
 
 </div>
+
+<footer class="page-footer">
+	<div class="footer-copyright">
+		<div class="container">
+			© 2016 Kevin Graber
+			<a class="grey-text text-lighten-4 right" href="#!">Github</a>
+		</div>
+	</div>
+</footer>
 
 <script type="text/javascript">
 
@@ -181,6 +230,27 @@
 	    // alert( moment() );
 	    // alert( moment().format("YYYY-MM-DD") );
 	    // alert( moment("20111031", "YYYYMMDD").format("YYYY-MM-DD") );
+	    var originURL = document.location.origin;
+	    $.ajax({url: originURL + '/profile', method: 'GET'}).done(function(response) {
+
+	 		for (var i = 0; i < response.length; i++){
+
+		 		var tr = $('<tr>')
+
+		 		var nameTD = $('<td>')
+		 		nameTD.text(response[i].student)
+
+		 		var formattedTime = moment(response[i].time).format("dddd MMM Do, h:mma")
+		 		var timeTD = $('<td>')
+		 		timeTD.text(formattedTime)
+
+		 		tr.append(nameTD)
+		 		tr.append(timeTD)
+
+			    $('#tableBody2').append(tr)
+		 	};
+
+	 	});
 
 	});
 
