@@ -44,64 +44,60 @@
 		</div>
 	</div>
 
-<div class="row">
-	<div class="col s12">
-		<ul class="tabs">
-			<li class="tab col s3"><a class="active" href="#test1">Available Sessions</a></li>
-			<li class="tab col s3"><a href="#test2">My Sessions</a></li>
-			<!-- <li class="tab col s3 disabled"><a href="#test3">Disabled Tab</a></li> -->
-			<!-- <li class="tab col s3"><a href="#test4">Test 4</a></li> -->
-		</ul>
-	</div>
-	<div id="test1" class="col s12">
-		<div class="row">
-			<table class="highlight centered">
-				<thead>
-					<tr>
-						<th data-field="id">Teacher</th>
-						<th data-field="name">Time</th>
-						<th data-field="price">Reserve</th>
-					</tr>
-				</thead>
-				<tbody id="tableBody">
-				</tbody>
-			</table>
+	<div class="row">
+		<div class="col s12">
+			<ul class="tabs">
+				<li class="tab col s3"><a class="active" href="#test1">Available Sessions</a></li>
+				<li class="tab col s3"><a href="#test2">My Sessions</a></li>
+				<!-- <li class="tab col s3 disabled"><a href="#test3">Disabled Tab</a></li> -->
+				<!-- <li class="tab col s3"><a href="#test4">Test 4</a></li> -->
+			</ul>
+		</div>
+
+		<div id="test1" class="col s12">
+			<div class="row">
+				<table class="highlight centered">
+					<thead>
+						<tr>
+							<th data-field="id">Teacher</th>
+							<th data-field="name">Time</th>
+							<th data-field="price">Reserve</th>
+						</tr>
+					</thead>
+					<tbody id="tableBody">
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div id="test2" class="col s12">
+			<div class="row">
+				<table class="highlight centered">
+					<thead>
+						<tr>
+							<th data-field="id">Teacher</th>
+							<th data-field="name">Time</th>
+							<!-- <th data-field="price">Reserve</th> -->
+						</tr>
+					</thead>
+					<tbody id="tableBody2">
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
-	<div id="test2" class="col s12">
-		<div class="row">
-			<table class="highlight centered">
-				<thead>
-					<tr>
-						<th data-field="id">Teacher</th>
-						<th data-field="name">Time</th>
-						<!-- <th data-field="price">Reserve</th> -->
-					</tr>
-				</thead>
-				<tbody id="tableBody2">
-				</tbody>
-			</table>
-		</div>
-	</div>
-	<!-- <div id="test3" class="col s12">Test 3</div> -->
-	<!-- <div id="test4" class="col s12">Test 4</div> -->
-</div>
-
-	<!-- <div class="row">
-		<table class="highlight">
-			<thead>
-				<tr>
-					<th data-field="id">Teacher</th>
-					<th data-field="name">Time</th>
-					<th data-field="price">Reserve</th>
-				</tr>
-			</thead>
-			<tbody id="tableBody">
-			</tbody>
-		</table>
-	</div> -->
 
 </div>
+
+<style type="text/css">
+	nav .brand-logo {
+		padding-left: 10px;
+	}
+
+	h1 {
+		font-weight: bold;
+	}
+</style>
 
 <script type="text/javascript">
 
@@ -167,36 +163,10 @@
 		 		var formattedTime = moment(response[i].time).format("dddd MMM Do, h:mma")
 
 		 		var timeTD = $('<td>')
-		 		// timeTD.text(response[i].time)
 		 		timeTD.text(formattedTime)
-
-
-		 		// var buttonTD = $('<td>')
-
-		 		// var buttonlink = $('<a>')
-		 		// buttonlink.addClass('waves-effect waves-light btn')
-		 		// buttonlink.text('click!')
-		 		// buttonlink.attr('data-id', response[i].id)
-
-
-		 		// buttonTD.append('<a class="waves-effect waves-light btn">button</a>')
-
-		 		// buttonlink.click(function(){
-		 		// 	var updateInfo = {
-					// 	id: $(this).attr("data-id")
-					// };
-					// $.post(originURL + '/update', updateInfo).done(function(data){
-
-					// });
-					// Materialize.toast('Session Reserved!', 4000)
-					// $(this).closest('tr').remove();
-		 		// })
-
-		 		// buttonTD.append(buttonlink)
 
 		 		tr.append(nameTD)
 		 		tr.append(timeTD)
-		 		// tr.append(buttonTD)
 
 			    $('#tableBody2').append(tr)
 		 	};
