@@ -202,8 +202,31 @@
 	    	// alert( moment( $('#theDate').val() + " " + $('#startTime option:selected').val() ).format('YYYY-MM-DD HH:mm:SS') );
 	    	var timeToPush = moment( $('#theDate').val() + " " + $('#startTime option:selected').val() ).format('YYYY-MM-DD HH:mm:SS');
 
+
+
+
+	    	var unformattedStartTime = moment( $('#theDate').val() + " " + $('#startTime option:selected').val() )
+	    	var unformattedEndTime = moment( $('#theDate').val() + " " + $('#endTime option:selected').val() )
+
+	    	// ===========================================================
+			// CONVERTING TIME TO UTC BECAUSE THE MYSQL DATABASE IS IN UTC
+			// ===========================================================
+			console.log("+++++ These times should be in UTC +++++")
+			var UTCStartTime = moment.utc(unformattedStartTime).format('YYYY-MM-DD HH:mm:SS')
+			var UTCEndTime = moment.utc(unformattedEndTime).format('YYYY-MM-DD HH:mm:SS')
+			console.log(UTCStartTime)
+			console.log(UTCEndTime)
+
+	    	// console.log("==== unformattedStartTime ====")
+	    	// console.log(unformattedStartTime.format('YYYY-MM-DD HH:mm:SS'))
+	    	// console.log("==== converting to UTC ====")
+	    	// console.log( moment.utc(unformattedStartTime).format('YYYY-MM-DD HH:mm:SS')  )
+
+
 	    	var formattedEndTime = moment( $('#theDate').val() + " " + $('#endTime option:selected').val() ).format('YYYY-MM-DD HH:mm:SS');
 	    	// alert(formattedEndTime)
+
+	    	console.log(formattedEndTime)
 
 	    	// Won't let you submit unless the end time is greater than the start time. 
 	    	if ( moment(formattedEndTime).diff(moment(timeToPush), 'minutes') <= 0 ) {
@@ -220,12 +243,20 @@
 			// 	console.log(m.format('YYYY-MM-DD HH:mm:SS'))
 			// }
 
+			console.log("OLD START AND END")
+			console.log(timeToPush)
+			console.log(formattedEndTime)
+			console.log("UTC START AND END")
+			console.log(UTCStartTime)
+			console.log(UTCEndTime)
+
+
 	    	var originURL = document.location.origin;
 
 		    var newSession = {
 				// name: $('#teacherName').val(),
-				time: timeToPush,
-				endTime: formattedEndTime
+				time: UTCStartTime,
+				endTime: UTCEndTime
 			};
 
 		    $.post(originURL + '/api/teacher', newSession).done(function(data){
@@ -245,7 +276,13 @@
 	    var originURL = document.location.origin;
 	    $.ajax({url: originURL + '/profile', method: 'GET'}).done(function(response) {
 
+	    	// console.log(moment().format('YYYY-MM-DD HH:mm:SS'))
+	    	// console.log(moment.utc().format('YYYY-MM-DD HH:mm:SS'))
+	    	console.log(response)
+
 	 		for (var i = 0; i < response.length; i++){
+
+	 			console.log(response[i].time)
 
 		 		var tr = $('<tr>')
 
@@ -253,6 +290,13 @@
 		 		nameTD.text(response[i].student)
 
 		 		var formattedTime = moment(response[i].time).format("dddd MMM Do, h:mma")
+
+		 		console.log("===== time =====")
+		 		console.log(response[i].time)
+		 		console.log("===== formattedTime =====")
+		 		console.log(formattedTime)
+
+
 		 		var timeTD = $('<td>')
 		 		timeTD.text(formattedTime)
 
